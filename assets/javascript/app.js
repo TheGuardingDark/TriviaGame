@@ -1,12 +1,13 @@
 
 
-var quiz = document.getElementById('quiz');
+const quiz = document.getElementById('quiz');
 var answer = document.getElementById('answer');
-var results = document.getElementById('results');
-var submitBtn = document.getElementById('submit');
+const results = document.getElementById('results');
+const submitBtn = document.getElementById('submit');
+const answerHolder = [];
 
 
-var quizQuestions = [
+const quizQuestions = [
     {
         question: "In DONTNOD's 'Life is Strange', Max discovers she has the power to:",
 
@@ -43,14 +44,14 @@ var quizQuestions = [
 ];
 
 function showQuiz(){
-    var output = [];
+    const output = [];
     quizQuestions.forEach(
         (currentQuestion, questionNumber) => {
-            var answers = [];
+            const answers = [];
             for(letter in currentQuestion.answers){
                 answers.push(
                     `<label>
-                    <input type="button" name="question${questionNumber}"
+                    <input type="radio" name="question${questionNumber}"
                     value="${letter}">
                        ${letter} :
                        ${currentQuestion.answers[letter]}
@@ -69,9 +70,29 @@ function showQuiz(){
 };
 
 
-function showAnswer(){};
-function showResults(){};
+function showResults() {
+     const answerHolders = quiz.querySelectorAll(".answers");
+        let numCorrect = 0;
+        quizQuestions.forEach( 
+            (currentQuestion, questionNumber) => {
+                const answerHold = answerHolders[questionNumber];
+                const selector = `input[name=question${questionNumber}]:checked`;
+                const playerAnswer = (answerHold.querySelector(selector) || {}).value;
+
+    if(playerAnswer === currentQuestion.correctAnswer){
+        numCorrect++;
+        answerHolders[questionNumber].style.color = 'lightgreen';
+    } else {
+        answerHolders[questionNumber].style.color = 'red';
+    }
+    });
+
+    results.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+};
+
+
+// function showAnswer(){};
 
 showQuiz();
 
-$("submitBtn").on('click', showAnswer);
+$("#submit").on('click', showResults)
