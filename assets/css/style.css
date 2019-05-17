@@ -1,0 +1,18 @@
+/* .round { */
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* .currentRound { */
+    opacity: 1;
+    z-index: 2;
+}
+
+.container {
+    position: relative;
+    height: 200px;
+    margin-top: 40px;
+}
