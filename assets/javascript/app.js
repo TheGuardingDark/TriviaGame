@@ -1,16 +1,14 @@
+$(document).ready(function() {
 
 
-const quiz = document.getElementById('quiz');
-// var answer = document.getElementById('answer');
-const correctText = document.getElementById('correct');
-const wrongText = document.getElementById('wrong');
-const unansweredText = document.getElementById('unanswered');
-const submitBtn = document.getElementById('submit');
-const round = document.querySelectorAll(".round");
-let roundNum = 0;
+const rounds = document.querySelectorAll(".round");
+// var currentRound = 0;
+// var lastRound = 8;
+// var answerHolder;
+var quizContainer = document.getElementById("quizContainer");
 var correct = 0;
 var wrong = 0;
-var unanswered = 0;
+var timeTook = 0;
 var intervalId;
 
 const quizQuestions = [
@@ -23,6 +21,7 @@ const quizQuestions = [
             c: "rewind time",
             d: "predict the lottery",
         },
+        img: "chloe.gif",
         correctAnswer: "c",
     },
     {
@@ -34,6 +33,7 @@ const quizQuestions = [
             c: "Far Cry",
             d: "Fallout 4",
         },
+        img: "lastOf.jpg",
         correctAnswer: "b",
     },
     {
@@ -45,22 +45,16 @@ const quizQuestions = [
             c: "Rex",
             d: "Doggo",
         },
+        img: "dogmeat.jpg",
         correctAnswer: "b",
     },
 ];
 
 
-// function showRound(n) {
-//     round[roundNum].classList.remove('currentRound');
-//     round[n].classList.add('currentRound');
-//     roundNum = n;
-//     submitBtn.style.display = 'inline-block';
-// };
-
-// showRound(0);
-
-function showQuiz(){
+function showQuiz() {
+//  reset();
  time = 30;
+ timeTook = 0;
     intervalId = setInterval(timer, 1000);
     const output = [];
     quizQuestions.forEach(
@@ -86,13 +80,20 @@ function showQuiz(){
         }
     );
 
-    quiz.innerHTML = output.join('');
+    quizContainer.innerHTML = output.join('');
+
 };
 
 function timer(){
+    timeTook++;
     time--;
     var currentTime = timeConverter(time);
     $("#timer").text(currentTime);
+    if(time < 1) {
+        $("#timer").hide();
+        $("#timeUp").text("Time Up!");
+        showResults();
+    }
 };
 
 function timeConverter(t){
@@ -112,26 +113,59 @@ function timeConverter(t){
 
 
 function showResults() {
-     const answerHolders = quiz.querySelectorAll(".answers");
+    clearInterval(intervalId);
+        // $("#timer").hide();
+     const answerHolders = quizContainer.querySelectorAll(".answers");
         quizQuestions.forEach( 
             (currentQuestion, questionNumber) => {
                 const answerHold = answerHolders[questionNumber];
                 const selector = `input[name=question${questionNumber}]:checked`;
                 const playerAnswer = (answerHold.querySelector(selector) || {}).value;
+                    // $("#answer").html("<img>").attr("src", "assests/images/" + currentQuestion.img).addClass("img-responsive");
+                    
 
-    if(playerAnswer === currentQuestion.correctAnswer){
+    if(playerAnswer === currentQuestion.correctAnswer) {
+        $(".results").text("Correct!");
+        answerHolders[questionNumber].style.color = "lightgreen";
         correct++;
+        currentRound++;
+        timer.stop();
+        // showAnswer();
         
-    } else if(playerAnswer === {}) {
-        unanswered++;
-    } else {
+    } else  {
+        $(".results").text("Nope!");
+        answerHolders[questionNumber].style.color = "red";
         wrong++;
-    }
+        currentRound++;
+        timer.stop();
+        // showAnswer();
+        
+    } 
     });
 
     $("#correct").text("You got " + correct + " questions correct!");
     $("#wrong").text("You answered " + wrong + " incorrectly.");
-    $("#unanswered").text("You skipped " + unanswered + " questions.");
+    $("#timeItTook").text("It took you " + timeTook + " seconds to finish");
+
+    $("#submit").hide();
+    $("#restart").show();
+
+    $("#restart").on('click', reset);
+};
+
+
+
+
+
+function reset() {
+    $("#restart").hide();
+    $("#correct, #wrong, #unanswered, #timeItTook, #timeUp").empty();
+    $("#submit, #timer").show();
+    correct = 0;
+    wrong = 0;
+    timeTook = 0;
+    currentRound = 0;
+    showQuiz();
 };
 
 
@@ -139,4 +173,15 @@ function showResults() {
 
 showQuiz();
 
+function showRound(n) {
+    rounds[currentRound].classList.remove('activeRound');
+    rounds[n].classList.add('activeRound');
+    currentRound = n;
+    submitBtn.style.display = 'inline-block';
+};
+
+showRound(0);
+
 $("#submit").on('click', showResults)
+
+})

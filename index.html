@@ -15,21 +15,32 @@
     <body>
 
         <div class="container flex-grow-1">
-            <div id="timer"></div>
-            <div id="quiz"></div>
+            <div class="timer"></div>
+            <div class="quiz-container">
+                <div id="quiz"></div>
+            </div>
+
+            <button id="previous">Prev</button>
+            <button id="next">next</button>
+
             <button id="submit">Submit</button>
-            <div id="answer"></div>
-            <div class="results">
+            
+            <div id="results">
+                <div id="timeUp"></div>
                 <div id="correct"></div>
                 <div id="wrong"></div>
-                <div id="unanswered"></div>
+                <div id="timeItTook"></div>
             </div>
+
+            <!-- <div id="answer"></div> -->
+
+            <!-- <button id="restart">Restart</button> -->
 
 
 
         </div>
 
 
-        <script type="text/javascript" src="assets/javascript/app.js"></script>
+        <script type="text/javascript" src="assets/javascript/test.js"></script>
     </body>
 </html>
