@@ -57,7 +57,7 @@ $(document).ready(function() {
           
                 answers.push(
                     `<label>
-                        <input type="radio" name="question${questionNumber}" value="${letter}">
+                        <input type="radio" name="question${questionNumber}" class="custom-control-inline" value="${letter}">
                         ${letter} :
                             ${currentQuestion.answers[letter]}
                     </label>`
