@@ -8,7 +8,7 @@ $(document).ready(function() {
     var time = 15;
     var timerOn = false;
     var timeUp = false;
-    
+    var intervalId;    
 
   
     const quizQuestions = [
@@ -49,7 +49,9 @@ $(document).ready(function() {
   
     function showQuiz() {
       const output = [];
-      roundNumber = 0;  
+      roundNumber = 0; 
+      $(".timer").show(); 
+      timer.start();
 
       quizQuestions.forEach((currentQuestion, questionNumber) => {
         const answers = [];
@@ -100,11 +102,16 @@ $(document).ready(function() {
                     timeUp = true;
                     timer.stop();
                         noMoreTime();
-                }
+                } 
+                
         }
     };
 
     function showResults() {
+      timer.stop();
+      timeUp = true;
+      $(".timer").hide();
+
       const answerContainers = quizContainer.querySelectorAll(".answers");
       let numCorrect = 0;
   
@@ -147,7 +154,9 @@ $(document).ready(function() {
     }
   
     function showNextSlide() {
+      timer.stop();
       showSlide(currentSlide + 1);
+      timer.start();
     }
   
     function showPreviousSlide() {
