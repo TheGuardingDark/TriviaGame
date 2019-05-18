@@ -1,14 +1,16 @@
 
 
 const quiz = document.getElementById('quiz');
-var answer = document.getElementById('answer');
-const results = document.getElementById('results');
+// var answer = document.getElementById('answer');
+const correctText = document.getElementById('correct');
+const wrongText = document.getElementById('wrong');
+const unansweredText = document.getElementById('unanswered');
 const submitBtn = document.getElementById('submit');
 const round = document.querySelectorAll(".round");
 let roundNum = 0;
-let correct = 0;
-let wrong = 0;
-let unanswered = 0;
+var correct = 0;
+var wrong = 0;
+var unanswered = 0;
 var intervalId;
 
 const quizQuestions = [
@@ -111,7 +113,6 @@ function timeConverter(t){
 
 function showResults() {
      const answerHolders = quiz.querySelectorAll(".answers");
-        let numCorrect = 0;
         quizQuestions.forEach( 
             (currentQuestion, questionNumber) => {
                 const answerHold = answerHolders[questionNumber];
@@ -119,14 +120,18 @@ function showResults() {
                 const playerAnswer = (answerHold.querySelector(selector) || {}).value;
 
     if(playerAnswer === currentQuestion.correctAnswer){
-        numCorrect++;
-        answerHolders[questionNumber].style.color = 'lightgreen';
+        correct++;
+        
+    } else if(playerAnswer === {}) {
+        unanswered++;
     } else {
-        answerHolders[questionNumber].style.color = 'red';
+        wrong++;
     }
     });
 
-    results.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+    $("#correct").text("You got " + correct + " questions correct!");
+    $("#wrong").text("You answered " + wrong + " incorrectly.");
+    $("#unanswered").text("You skipped " + unanswered + " questions.");
 };
 
 
