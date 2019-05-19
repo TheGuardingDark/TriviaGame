@@ -1,18 +1,18 @@
+
+
 $(document).ready(function() {
 
-
-const rounds = document.querySelectorAll(".round");
-// var currentRound = 0;
-// var lastRound = 8;
-// var answerHolder;
-var quizContainer = document.getElementById("quizContainer");
-var correct = 0;
-var wrong = 0;
-var timeTook = 0;
-var intervalId;
-
-const quizQuestions = [
-    {
+    const quizContainer = document.getElementById("quiz");
+    const resultsContainer = document.getElementById("results");
+    const submitButton = document.getElementById("submit");
+    var time = 15;
+    var timerOn = false;
+    var gameOver = false;
+    var intervalId;    
+    var currentSlide = 0;
+  
+    const quizQuestions = [
+      {
         question: "In DONTNOD's 'Life is Strange', Max discovers she has the power to:",
 
         answers: {
@@ -21,10 +21,10 @@ const quizQuestions = [
             c: "rewind time",
             d: "predict the lottery",
         },
-        img: "chloe.gif",
-        correctAnswer: "c",
-    },
-    {
+        img: "assets/images/chloe.gif",
+        correctAnswer: "c"
+      },
+      {
         question: "The Fireflies are a revolutionary militia group in which award-winning survival game?",
 
         answers: {
@@ -33,10 +33,10 @@ const quizQuestions = [
             c: "Far Cry",
             d: "Fallout 4",
         },
-        img: "lastOf.jpg",
-        correctAnswer: "b",
-    },
-    {
+        img: "assets/images/firefly.jpg",
+        correctAnswer: "b"
+      },
+      {
         question: "The German Shepherd who acts as your companion in 'Fallout 4' is named:",
 
         answers: {
@@ -45,143 +45,353 @@ const quizQuestions = [
             c: "Rex",
             d: "Doggo",
         },
-        img: "dogmeat.jpg",
+        img: "assets/images/dogmeat.gif",
+        correctAnswer: "b"
+      },
+      {
+        question: "Skooma is a drug that can be obtained in which role-playing series?",
+
+        answers: {
+            a: "The Legend of Zelda",
+            b: "The Elder Scrolls",
+            c: "Diablo",
+            d: "Grand Theft Auto",
+        },
+        img: "assets/images/skooma.gif",
         correctAnswer: "b",
-    },
-];
+      },
+      {
+        question: "'Heavy Rain' follows four protagonists involved with the mystery of which serial killer?",
 
+        answers: {
+            a: "The Sandman",
+            b: "The Rainmaker",
+            c: "The Origami Killer",
+            d: "Mr. Sleep",
+        },
+        img: "assets/images/heavyRain.gif",
+        correctAnswer: "c",
+      },
+      {
+        question: "Which Legend of Zelda game was the first to use voice acting during cutscenes?",
 
-function showQuiz() {
-//  reset();
- time = 30;
- timeTook = 0;
-    intervalId = setInterval(timer, 1000);
-    const output = [];
-    quizQuestions.forEach(
-        (currentQuestion, questionNumber) => {
-            const answers = [];
-            for(letter in currentQuestion.answers){
+        answers: {
+            a: "Windwaker",
+            b: "Majora's Mask",
+            c: "Link to the Past",
+            d: "Breath of the Wild",
+        },
+        img: "assets/images/wwLink.gif",
+        correctAnswer: "d",
+      },
+      {
+        question: "Monokuma is a homicidal stuffed bear in which whodunit series?",
+
+        answers: {
+            a: "Clue",
+            b: "Danganronpa",
+            c: "LA Noire",
+            d: "Ace Attorney: Phoenix Wright",
+        },
+        img: "assets/images/mono.gif",
+        correctAnswer: "b",
+      },
+      {
+        question: "Which GTA game is based on Los Angeles?",
+
+        answers: {
+            a: "GTA V",
+            b: "GTA: Vice City",
+            c: "GTA III",
+            d: "GTA IV",
+        },
+        img: "assets/images/gta.gif",
+        correctAnswer: "a",
+      },
+      {
+        question: "In which game does eating lizard tails increase your stamina?",
+
+        answers: {
+            a: "Spyro",
+            b: "Outlast",
+            c: "Dishonored",
+            d: "Shadow of the Colossus",
+        },
+        img: "assets/images/control.gif",
+        correctAnswer: "d",
+      },
+      {
+        question: "Which non-horror game received praise for its horror themed level, 'Robbing the Cradle'?",
+
+        answers: {
+            a: "Thief: Deadly Shadows",
+            b: "Dishonored 2",
+            c: "Uncharted 4",
+            d: "Persona 4",
+        },
+        img: "assets/images/hall.gif",
+        correctAnswer: "a",
+      },
+      {
+        question: "In which game do you play a young circus runaway, determined to sneak into a summer camp for children with psychic abilities?",
+
+        answers: {
+            a: "Suikoden IV",
+            b: "Psychonauts",
+            c: "Bully",
+            d: "Grim Fandango",
+        },
+        img: "assets/images/jump.gif",
+        correctAnswer: "b",
+      },
+      {
+        question: "Rainbow Road is a course in which popular racing series?",
+
+        answers: {
+            a: "Gran Turismo",
+            b: "Twisted Metal",
+            c: "Mario Kart",
+            d: "X Motor Racing",
+        },
+        img: "assets/images/car.gif",
+        correctAnswer: "c",
+      },
+      {
+        question: "In the psychological horror game, 'Soma', the protagonist discovers he is a what?",
+
+        answers: {
+            a: "Zombie",
+            b: "Fish",
+            c: "God",
+            d: "Robot",
+        },
+        img: "assets/images/soma.gif",
+        correctAnswer: "d",
+      },
+      {
+        question: "This game was heavily influenced by the television show 'Twin Peaks",
+
+        answers: {
+            a: "Deadly Premonition",
+            b: "Outlast",
+            c: "Stardew Valley",
+            d: "Indigo Prophecy",
+        },
+        img: "assets/images/coffee.gif",
+        correctAnswer: "a",
+      },
+      {
+        question: "In which SNES game did you race as a unicycle?",
+
+        answers: {
+            a: "Universe Racers",
+            b: "Rock n Roll Racing",
+            c: "Uniracers",
+            d: "Stunt Race FX",
+        },
+        img: "assets/images/hockey.gif",
+        correctAnswer: "c",
+      },
+      {
+        question: "'Until Dawn' features which supernatural creature?",
+
+        answers: {
+            a: "Werewolf",
+            b: "Vampire",
+            c: "Ghost",
+            d: "Wendigo",
+        },
+        img: "assets/images/door.gif",
+        correctAnswer: "d",
+      },
+
+      ];
+
+    
+  
+    function showQuiz() {
+      const output = [];
+      gameOver = false;
+      numCorrect = 0;
+      $("#restart").hide();
+      $("#previous").hide();  
+      timer.start();
+      $(".timer").show();
+      
+
+      quizQuestions.forEach((currentQuestion, questionNumber) => {
+        const answers = [];
+            for (letter in currentQuestion.answers) {
+          
                 answers.push(
                     `<label>
-                    <input type="radio" name="question${questionNumber}"
-                    value="${letter}">
-                       ${letter} :
-                       ${currentQuestion.answers[letter]}
-                       </label>` 
-                );
+                        <input type="radio" name="question${questionNumber}" class="custom-control-inline" value="${letter}">
+                        ${letter} :
+                            ${currentQuestion.answers[letter]}
+                    </label>`
+          );
+        };
+  
+        output.push(
+          `<div class="slide">          
+             <div class="question"> ${currentQuestion.question} </div>
+             <div class="answers"> ${answers.join("")} </div>
+                 <img class="qImage" src=${currentQuestion.img} />
+           </div>`
+
+        );
+      });
+  
+      quizContainer.innerHTML = output.join("");
+      
+      
+    };
+  
+
+
+    var timer = {
+        timeLeft: time,
+
+        start: function() {
+            if(!timerOn) {
+                intervalId = setInterval(timer.count, 1000);
+                timerOn = true;
             }
+        },
 
-            output.push(
-                `<div class="round">
-                    <div class="question"> ${currentQuestion.question} </div>
-                        <div class="answers"> ${answers.join('')} </div>
-                </div>`
-            );
+        stop: function() {
+            clearInterval(intervalId);
+            timerOn = false;
+            timer.timeLeft = time;
+        },
+
+        count: function() {
+            timer.timeLeft--;
+            $(".timer").text(timer.timeLeft);
+                if(timer.timeLeft === 0) {
+                    timeUp = true;
+                    timer.stop();
+                        noMoreTime();
+                } 
+                
         }
-    );
+    };
 
-    quizContainer.innerHTML = output.join('');
+    function showResults() {
+      gameOver = true;
+      timer.stop();
+      timeUp = true;
+      $(".timer").hide();
+      $("#previous").show();
+      $("#submit").hide();
+      $("#restart").show();
+      $("#results").show();
 
-};
-
-function timer(){
-    timeTook++;
-    time--;
-    var currentTime = timeConverter(time);
-    $("#timer").text(currentTime);
-    if(time < 1) {
-        $("#timer").hide();
-        $("#timeUp").text("Time Up!");
-        showResults();
+     
+      const answerContainers = quizContainer.querySelectorAll(".answers");
+      let numCorrect = 0;
+  
+      quizQuestions.forEach((currentQuestion, questionNumber) => {
+        
+        const answerContainer = answerContainers[questionNumber];
+        const selector = `input[name=question${questionNumber}]:checked`;
+        const userAnswer = (answerContainer.querySelector(selector) || {}).value;
+  
+        
+        if (userAnswer === currentQuestion.correctAnswer) {
+          numCorrect++;
+          answerContainers[questionNumber].style.color = "lightgreen";
+        } else {
+          answerContainers[questionNumber].style.color = "red";
+        }
+      });
+  
+      resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+     
     }
-};
+  
+    function showSlide(n) {
+      slides[currentSlide].classList.remove("active-slide");
+      slides[n].classList.add("active-slide");
+      currentSlide = n;
+      
+      
+     if (gameOver === true && currentSlide !== 0) {
+        previousButton.style.display = "inline-block";
+      } else  {
+         previousButton.style.display = "none";
+      };
 
-function timeConverter(t){
-    var minutes = Math.floor(t / 60);
-    var seconds = t - (minutes * 60);
-        if (seconds < 10) {
-            seconds = "0" + seconds;
+      if (currentSlide === slides.length - 1 && gameOver === false) {
+        nextButton.style.display = "none";
+        submitButton.style.display = "inline-block";
+      } else {
+        nextButton.style.display = "inline-block";
+        submitButton.style.display = "none";
+      }
+
+      if(gameOver === true && currentSlide === slides.length -1) {
+        nextButton.style.display = "none";
+      }
+    }
+  
+    function showNextSlide() {
+      timer.stop();
+      showSlide(currentSlide + 1);
+      timer.start();
+    }
+  
+    function showPreviousSlide() {
+      showSlide(currentSlide - 1);
+    }
+
+    function noMoreTime() {
+        if(currentSlide === slides.length - 1) {
+            showResults();
+        }else {
+            showNextSlide();
         }
-        if (minutes === 0) {
-            minutes = "00";
+    };
+
+    function resetBtns() {
+      var radioBtn = document.getElementsByClassName("custom-control-inline");
+        for (var i = 0; i < radioBtn.length; i++) {
+          var btn = radioBtn[i];
+          btn.checked = false;
         }
-        else if (minutes < 10) {
-            minutes = "0" + minutes;
-        }
-        return minutes + ":" + seconds;
-};
+    };
+  
+    function restart() {
 
+      $("#restart").hide();
+      $("#results").hide();
+      timeUp = false;
+      gameOver = false;
+      numCorrect = 0;
+      $(".answers").css("color", "black");
+      resetBtns();
+      timer.start();
+      $(".timer").show();
+      showSlide(0);
 
-function showResults() {
-    clearInterval(intervalId);
-        // $("#timer").hide();
-     const answerHolders = quizContainer.querySelectorAll(".answers");
-        quizQuestions.forEach( 
-            (currentQuestion, questionNumber) => {
-                const answerHold = answerHolders[questionNumber];
-                const selector = `input[name=question${questionNumber}]:checked`;
-                const playerAnswer = (answerHold.querySelector(selector) || {}).value;
-                    // $("#answer").html("<img>").attr("src", "assests/images/" + currentQuestion.img).addClass("img-responsive");
-                    
-
-    if(playerAnswer === currentQuestion.correctAnswer) {
-        $(".results").text("Correct!");
-        answerHolders[questionNumber].style.color = "lightgreen";
-        correct++;
-        currentRound++;
-        timer.stop();
-        // showAnswer();
-        
-    } else  {
-        $(".results").text("Nope!");
-        answerHolders[questionNumber].style.color = "red";
-        wrong++;
-        currentRound++;
-        timer.stop();
-        // showAnswer();
-        
-    } 
-    });
-
-    $("#correct").text("You got " + correct + " questions correct!");
-    $("#wrong").text("You answered " + wrong + " incorrectly.");
-    $("#timeItTook").text("It took you " + timeTook + " seconds to finish");
-
-    $("#submit").hide();
-    $("#restart").show();
-
-    $("#restart").on('click', reset);
-};
-
-
-
-
-
-function reset() {
-    $("#restart").hide();
-    $("#correct, #wrong, #unanswered, #timeItTook, #timeUp").empty();
-    $("#submit, #timer").show();
-    correct = 0;
-    wrong = 0;
-    timeTook = 0;
-    currentRound = 0;
+    }
+   
     showQuiz();
-};
+  
+    const previousButton = document.getElementById("previous");
+    const nextButton = document.getElementById("next");
+    const restartButton = document.getElementById("restart");
+    const slides = document.querySelectorAll(".slide");
+
+  
+    showSlide(0);
 
 
-// function showAnswer(){};
-
-showQuiz();
-
-function showRound(n) {
-    rounds[currentRound].classList.remove('activeRound');
-    rounds[n].classList.add('activeRound');
-    currentRound = n;
-    submitBtn.style.display = 'inline-block';
-};
-
-showRound(0);
-
-$("#submit").on('click', showResults)
-
-})
+  
+    restartButton.addEventListener("click", restart);
+    submitButton.addEventListener("click", showResults);
+    previousButton.addEventListener("click", showPreviousSlide);
+    nextButton.addEventListener("click", showNextSlide);
+  })
+  
+  
