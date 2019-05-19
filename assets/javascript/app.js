@@ -169,7 +169,7 @@ $(document).ready(function() {
         correctAnswer: "d",
       },
       {
-        question: "This game was heavily influenced by the television show 'Twin Peaks",
+        question: "This game was heavily influenced by the television show 'Twin Peaks'.",
 
         answers: {
             a: "Deadly Premonition",
@@ -281,7 +281,7 @@ $(document).ready(function() {
       gameOver = true;
       timer.stop();
       timeUp = true;
-      $(".timer").hide();
+      $(".timer").text("Game Over");
       $("#previous").show();
       $("#submit").hide();
       $("#restart").show();
@@ -300,13 +300,13 @@ $(document).ready(function() {
         
         if (userAnswer === currentQuestion.correctAnswer) {
           numCorrect++;
-          answerContainers[questionNumber].style.color = "lightgreen";
+          answerContainers[questionNumber].style.color = "#00ff00";
         } else {
-          answerContainers[questionNumber].style.color = "red";
+          answerContainers[questionNumber].style.color = "#ff0000";
         }
       });
   
-      resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length}`;
+      resultsContainer.innerHTML = `${numCorrect} out of ${quizQuestions.length} correct`;
      
     }
   
@@ -336,10 +336,14 @@ $(document).ready(function() {
     }
   
     function showNextSlide() {
-      timer.stop();
-      showSlide(currentSlide + 1);
-      timer.start();
-    }
+      if(gameOver===true) {
+        timer.stop();
+        showSlide(currentSlide + 1);
+      }else {
+        timer.stop();
+        showSlide(currentSlide + 1);
+        timer.start();
+    }}
   
     function showPreviousSlide() {
       showSlide(currentSlide - 1);
