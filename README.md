@@ -5,6 +5,7 @@
 
 Game Functionality
 ==================
+### Deployed Link: https://theguardingdark.github.io/TriviaGame/
 
 Game loads with first question and gif in place as well as a timer at the top counting down from 15 seconds. The player may choose one of the four question answers and click the 'next' button to proceed to the next slide. If the player does not click the 'next' button by the time the countdown reaches zero, the question will automatically move on and mark any unanswered questions as incorrect.
 
